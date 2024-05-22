@@ -10,8 +10,34 @@ chrome.runtime.onInstalled.addListener(async () => {
 		function () {
 			console.log("starting point ki value set ho gayi");
 			getFirstvalue();
+			
 		}
-	);
+	)
+
+	
+
+
+
+	setInterval(async () => {
+		// Retrieve the current startingPoint value from storage
+		let result = await chrome.storage.local.get("startingPoint");
+		let startingPoint = result.startingPoint;
+
+		// Increment the startingPoint value
+		startingPoint += 1;
+
+		// Update the startingPoint value in storage
+		await chrome.storage.local
+			.set({ startingPoint: startingPoint })
+			.then(() => {
+				console.log("Value is set successfully");
+			});
+
+		// Retrieve and log the updated startingPoint value
+		let updatedResult = await chrome.storage.local.get("startingPoint");
+		console.log("Value is " + updatedResult.startingPoint);
+	}, 24 * 60 * 60 * 1000);
+
 
 	await chrome.storage.local.get(["startingPoint"]).then((result) => {
 		console.log("Value is " + result.startingPoint);
@@ -124,3 +150,7 @@ async function keepAlive() {
 		return;
 	}
 }
+
+
+
+
